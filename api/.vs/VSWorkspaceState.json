@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Api",
+    "\\Api\\bin\\Debug",
+    "\\Api\\bin\\Debug\\net6.0",
+    "\\Api\\Controllers",
+    "\\Api\\DataAccess",
+    "\\Api\\Properties"
+  ],
+  "SelectedNode": "\\Api\\Api.csproj",
+  "PreviewInSolutionExplorer": false
+}

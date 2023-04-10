@@ -1,4 +1,5 @@
 ﻿using Api.Model;
+using System.Collections;
 
 namespace Api.DataAccess
 {
@@ -7,5 +8,8 @@ namespace Api.DataAccess
         int CreateUser(User user);
         bool isEmailAvailable(string email);
         bool AuthenticateUser(string email, string password, out User user);
+        IList<Book> GetAllBooks();
+
+        bool OrderBook(int userId, int bookId);
     }
 }

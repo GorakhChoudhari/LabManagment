@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "jS7eK5cao6yWrR4ObPFJKUjAarZmPBevX7cquwIHlm3akK7Xf1ESkNXzHE1v0Z38Qj2sCAIIi74MvGM7gctFUw==",
+  "dgSpecHash": "YhmkjXGQZJywyt41VsXFCvHFJJpxxo3jO1AcJgwy1DvdpQqhrRRsu9QIcrWZbEV56hWCN7MT8ExSyPlKC9QWNg==",
   "success": true,
-  "projectFilePath": "C:\\Library Managment\\api\\Api\\Api.csproj",
+  "projectFilePath": "C:\\lab managment\\LabManagment\\api\\Api\\Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\GorakhChhaganChaudha\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\GorakhChhaganChaudha\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.13\\microsoft.aspnetcore.authentication.jwtbearer.6.0.13.nupkg.sha512",

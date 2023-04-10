@@ -42,5 +42,30 @@ namespace Api.Controllers
             }
             return Ok("Inavlid");
         }
+
+        [HttpGet("GetAllBooks")]
+
+        public IActionResult GetAllBooks()
+        {
+            var books = library.GetAllBooks();
+            var booksToSend = books.Select(book => new
+            {
+                book.id,
+                book.Title,
+                book.Category.Category,
+                book.Category.SubCategory,
+                book.Price,
+                book.Author,
+                Available = !book.Ordered
+
+            }).ToList();
+            return Ok(booksToSend);
+        }
+        [HttpGet("OrderBook/{userId}/{bookId}")]
+        public IActionResult OrderBook(int userId,int bookId)
+        {
+            var result = library.OrderBook(userId, bookId) ? "Success" : "Fail";
+            return Ok(result);
+        }
     }
 }

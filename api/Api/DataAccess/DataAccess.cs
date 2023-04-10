@@ -55,6 +55,23 @@ namespace Api.DataAccess
             return result;
         }
 
+        public IList<Book> GetAllBooks()
+        {
+           IEnumerable<Book> books = null;
+            using (var connection = new SqlConnection(Dbconnection))
+            {
+                var sql = "Select * from Books;";
+                books = connection.Query<Book>(sql);
+                foreach(var book in books)
+                {
+                    sql = "select * from BookCategories where Id =" + book.CategoryId;
+                    book.Category = connection.QuerySingle<BookCategory>(sql);
+                }
+
+            };
+            return books.ToList();
+        }
+
         public bool isEmailAvailable(string email)
         {
            var result = false;
@@ -63,6 +80,24 @@ namespace Api.DataAccess
                 result = conn.ExecuteScalar<bool>("select count(*) from Users where Email=@email;", new {email});
             }
              return !result;
+        }
+
+        public bool OrderBook(int userId, int bookId)
+        {
+            var ordered = false;
+            using (var conn = new SqlConnection(Dbconnection))
+            {
+                var sql = $"insert into Orders(userId,BookId,OrderedOn,Returned) values ({userId},{bookId},'{DateTime.Now:yyyy-MM-dd HH:mm:ss}',0);";
+                var inserted = conn.Execute(sql) == 1;
+                if (inserted)
+                {
+                    sql = $"update Books set Ordered = 1 where Id ={bookId}";
+                    var updated = conn.Execute(sql) == 1;
+                    ordered = inserted;
+                }
+
+            }
+            return ordered;
         }
     }
 }
