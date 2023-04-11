@@ -11,5 +11,10 @@ namespace Api.DataAccess
         IList<Book> GetAllBooks();
 
         bool OrderBook(int userId, int bookId);
+        IList<Orders> GetOrders(int userId);
+
+        IList<Orders>GetAllOrders();
+
+        bool ReturnedBook(int bookId,int userId);
     }
 }

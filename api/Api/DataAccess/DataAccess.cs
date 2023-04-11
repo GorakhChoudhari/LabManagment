@@ -1,6 +1,9 @@
 ﻿using Api.Model;
 using System.Data.SqlClient;
 using Dapper;
+using static System.Reflection.Metadata.BlobBuilder;
+using System.Net;
+using System.Xml.Linq;
 
 namespace Api.DataAccess
 {
@@ -72,6 +75,42 @@ namespace Api.DataAccess
             return books.ToList();
         }
 
+        public IList<Orders> GetAllOrders()
+        {
+            IEnumerable<Orders> orders;
+            using (var connection = new SqlConnection(Dbconnection))
+            {
+                var sql = @"select
+                        o.Id, 
+                        u.Id as UserId, CONCAT(u.FirstName, ' ', u.LastName) as Name,
+                        o.BookId as BookId, b.Title as BookName,
+                        o.OrderedOn as OrderDate, o.Returned as Returned
+                    from Users u LEFT JOIN Orders o ON u.Id = o.UserId
+                    LEFT JOIN Books b ON o.BookId = b.Id
+                    where o.ID IS NOT NULL";
+                orders = connection.Query<Orders>(sql);
+            }
+            return orders.ToList();
+        }
+
+        public IList<Orders> GetOrders(int userId)
+        {
+            IEnumerable<Orders> orders;
+            using (var connection = new SqlConnection(Dbconnection))
+            {
+                var sql = @"select
+                        o.Id, 
+                        u.Id as UserId, CONCAT(u.FirstName, ' ', u.LastName) as Name,
+                        o.BookId as BookId, b.Title as BookName,
+                        o.OrderedOn as OrderDate, o.Returned as Returned
+                    from Users u LEFT JOIN Orders o ON u.Id = o.UserId
+                    LEFT JOIN Books b ON o.BookId = b.Id
+                    where o.UserId IN(@Id)";
+                orders = connection.Query<Orders>(sql,new {id=userId});
+            }
+            return orders.ToList();
+        }
+
         public bool isEmailAvailable(string email)
         {
            var result = false;
@@ -98,6 +137,19 @@ namespace Api.DataAccess
 
             }
             return ordered;
+        }
+
+        public bool ReturnedBook(int bookId, int userId)
+        {
+            var returned = false;
+            using (var conn = new SqlConnection(Dbconnection)) 
+            {
+                var sql=$"update Books set Ordered=0 where id={bookId};";
+                conn.Execute(sql);
+
+                sql = $"update Orders set Returned=1 where UserId={userId} and BookId={bookId};";
+                returned=conn.Execute(sql)==1;
+            }return returned;
         }
     }
 }

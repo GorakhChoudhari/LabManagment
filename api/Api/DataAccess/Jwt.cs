@@ -31,7 +31,7 @@ namespace Api.DataAccess
                 new Claim("blocked",user.Blocked.ToString()),
                 new Claim("active",user.Active.ToString()),
                 new Claim("createdAt",user.createdOn),
-                new Claim("userTYpe",user.UserType.ToString())
+                new Claim("userType",user.UserType.ToString())
             };
             var JwtToken = new JwtSecurityToken
            (

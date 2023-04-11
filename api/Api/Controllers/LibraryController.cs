@@ -67,5 +67,27 @@ namespace Api.Controllers
             var result = library.OrderBook(userId, bookId) ? "Success" : "Fail";
             return Ok(result);
         }
+        [HttpGet("GetOrders/{userId}")]
+
+        public IActionResult Getorders(int userId)
+        {
+            var result = library.GetOrders(userId);
+            return Ok(result);  
+        }
+        [HttpGet("GetOrders")]
+
+        public IActionResult GetAllOrders()
+        {
+            var result = library.GetAllOrders();
+            return Ok(result);
+        }
+
+        [HttpGet("ReturnBook/{bookId}/{userId}")]
+        public IActionResult ReturedBook(string bookId,string userId)
+        {
+            var result =library.ReturnedBook(int.Parse(bookId),int.Parse(userId));
+            return Ok(result == true ? "Not Returned" : "Success");
+        }
+        
     }
 }
