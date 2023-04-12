@@ -4,6 +4,7 @@ using Dapper;
 using static System.Reflection.Metadata.BlobBuilder;
 using System.Net;
 using System.Xml.Linq;
+using System.Data.Common;
 
 namespace Api.DataAccess
 {
@@ -93,6 +94,40 @@ namespace Api.DataAccess
             return orders.ToList();
         }
 
+        public IList<User> GetAllUsers()
+        {
+            IEnumerable<User> users;
+            using (var connection = new SqlConnection(Dbconnection))
+            {
+                users = connection.Query<User>("select * from Users;");
+
+                var listOfOrders =
+                    connection.Query("select u.Id as UserId, o.BookId as BookId, o.OrderedOn as OrderDate, o.Returned as Returned from Users u LEFT JOIN Orders o ON u.Id=o.UserId;");
+
+                foreach (var user in users)
+                {
+                    var orders = listOfOrders.Where(lo => lo.UserId == user.id).ToList();
+                    var fine = 0;
+                    foreach (var order in orders)
+                    {
+                        if (order.BookId != null && order.Returned != null && order.Returned == false)
+                        {
+                            var orderDate = order.OrderDate;
+                            var maxDate = orderDate.AddDays(10);
+                            var currentDate = DateTime.Now;
+
+                            var extraDays = (currentDate - maxDate).Days;
+                            extraDays = extraDays < 0 ? 0 : extraDays;
+
+                            fine = extraDays * 50;
+                            user.Fine += fine;
+                        }
+                    }
+                }
+            }
+            return users.ToList();
+        }
+
         public IList<Orders> GetOrders(int userId)
         {
             IEnumerable<Orders> orders;
@@ -150,6 +185,32 @@ namespace Api.DataAccess
                 sql = $"update Orders set Returned=1 where UserId={userId} and BookId={bookId};";
                 returned=conn.Execute(sql)==1;
             }return returned;
+        }
+
+       
+
+        public void BlockUser(int userid)
+        {
+            using var conn = new SqlConnection(Dbconnection) ;
+            conn.Execute("update Users Set Blocked=1 where Id = @Id",new { Id = userid });
+        }
+
+        public void UnBlockUser(int userid)
+        {
+            using var conn = new SqlConnection(Dbconnection);
+            conn.Execute("update Users Set Blocked=0 where Id = @Id", new { Id = userid });
+        }
+
+        public void DeactivateUser(int userid)
+        {
+            using var conn = new SqlConnection(Dbconnection);
+            conn.Execute("update Users Set Active=1 where Id = @Id", new { Id = userid });
+        }
+
+        public void ActivateUser(int userid)
+        {
+            using var conn = new SqlConnection(Dbconnection);
+            conn.Execute("update Users Set Active=0 where Id = @Id", new { Id = userid });
         }
     }
 }

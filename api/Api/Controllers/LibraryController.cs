@@ -88,6 +88,51 @@ namespace Api.Controllers
             var result =library.ReturnedBook(int.Parse(bookId),int.Parse(userId));
             return Ok(result == true ? "Not Returned" : "Success");
         }
-        
+        [HttpGet("GetUsers")]
+        public IActionResult GetUsers()
+        {
+            var users = library.GetAllUsers();
+            var result = users.Select(user => new
+            {
+                user.id,
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                user.Mobile,
+                user.Blocked,
+                user.Active,
+                user.createdOn,
+                user.UserType,
+                user.Fine,
+            });
+
+            return Ok(result);
+        }
+
+        [HttpGet("ChangeBlockStatus/{status}/{Id}")]
+        public IActionResult ChangeBlockStatus(int status , int id) {
+            if (status == 1)
+            {
+                library.BlockUser(id);
+            }
+            else {
+                library.UnBlockUser(id);
+            }
+            return Ok("Success");
+        }
+
+        [HttpGet("ChangeEnableStatus/{status}/{Id}")]
+        public IActionResult ChangeEnableStatus(int status, int id)
+        {
+            if (status == 1)
+            {
+                library.ActivateUser(id);
+            }
+            else
+            {
+                library.DeactivateUser(id);
+            }
+            return Ok("Success");
+        }
     }
 }

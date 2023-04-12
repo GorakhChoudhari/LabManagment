@@ -14,7 +14,13 @@ namespace Api.DataAccess
         IList<Orders> GetOrders(int userId);
 
         IList<Orders>GetAllOrders();
+        IList<User> GetAllUsers();
 
         bool ReturnedBook(int bookId,int userId);
+
+        void BlockUser(int userid);
+        void UnBlockUser(int userid);
+        void DeactivateUser(int userid);
+        void ActivateUser(int userid);
     }
 }
