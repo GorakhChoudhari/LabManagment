@@ -109,7 +109,7 @@ namespace Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("ChangeBlockStatus/{status}/{Id}")]
+        [HttpGet("ChangeBlockStatus/{status}/{id}")]
         public IActionResult ChangeBlockStatus(int status , int id) {
             if (status == 1)
             {
@@ -121,7 +121,7 @@ namespace Api.Controllers
             return Ok("Success");
         }
 
-        [HttpGet("ChangeEnableStatus/{status}/{Id}")]
+        [HttpGet("ChangeEnableStatus/{status}/{id}")]
         public IActionResult ChangeEnableStatus(int status, int id)
         {
             if (status == 1)
