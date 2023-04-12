@@ -94,7 +94,7 @@ namespace Api.DataAccess
             return orders.ToList();
         }
 
-        public IList<User> GetAllUsers()
+        public IList<User> GetAllUsers ()
         {
             IEnumerable<User> users;
             using (var connection = new SqlConnection(Dbconnection))
