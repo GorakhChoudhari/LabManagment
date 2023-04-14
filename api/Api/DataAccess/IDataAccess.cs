@@ -22,5 +22,7 @@ namespace Api.DataAccess
         void UnBlockUser(int userid);
         void DeactivateUser(int userid);
         void ActivateUser(int userid);
+        void InsertBook(Book book);
+        bool DeleteBook(int bookId);
     }
 }

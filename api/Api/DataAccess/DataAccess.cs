@@ -5,6 +5,8 @@ using static System.Reflection.Metadata.BlobBuilder;
 using System.Net;
 using System.Xml.Linq;
 using System.Data.Common;
+using System.Linq.Expressions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Api.DataAccess
 {
@@ -212,5 +214,43 @@ namespace Api.DataAccess
             using var conn = new SqlConnection(Dbconnection);
             conn.Execute("update Users Set Active=0 where Id = @Id", new { Id = userid });
         }
+
+        public void InsertBook(Book book)
+        {
+            using var conn = new SqlConnection(Dbconnection);
+            var sql = "select Id from BookCategories where Category = @cat and Subcategory = @subcat";
+            var parameter1 = new
+            {
+                cat = book.Category.Category,
+            subcat = book.Category.SubCategory
+
+            };
+            var categoryId = conn.ExecuteScalar<int>(sql, parameter1);
+
+            sql = "insert into Books (Title,Author, Price,Ordered,CategoryId) values (@title,@author,@price,@ordered ,@catid)";
+            var params2 = new
+            {
+                title = book.Title,
+                author = book.Author,
+                price = book.Price,
+                Ordered = book.Ordered,
+                catid = categoryId
+            };
+            conn.Execute(sql, params2);
+        }
+
+        public bool DeleteBook(int bookId)
+        {
+            var deleted = false;
+            using var conn = new SqlConnection(Dbconnection);
+            {
+                var sql = $"delete books where id={bookId}";
+                deleted = conn.Execute(sql) == 1;
+            }
+            return deleted;
+           
+        }
+
+        
     }
 }

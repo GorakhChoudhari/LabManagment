@@ -126,13 +126,35 @@ namespace Api.Controllers
         {
             if (status == 1)
             {
-                library.ActivateUser(id);
+                library.DeactivateUser(id);
             }
             else
             {
-                library.DeactivateUser(id);
-            }
+                library.ActivateUser(id);      
+                    
+             };
             return Ok("Success");
+        }
+        [HttpPost("InsertBook")]
+        public IActionResult InsertBook(Book book)
+        {
+            book.Title = book.Title.Trim();
+            book.Author = book.Author.Trim();
+            book.Category.Category = book.Category.Category.ToLower();
+            book.Category.SubCategory = book.Category.SubCategory.ToLower();
+
+
+            library.InsertBook(book);
+            return Ok("Inserted");
+
+
+        }
+        [HttpDelete("deleteBook")]
+
+        public IActionResult DeleteBook(int bookId)
+        {
+            var result = library.DeleteBook(bookId) ? "success" : " Fail ";
+            return Ok(result);
         }
     }
 }
