@@ -13,10 +13,12 @@ namespace Api.DataAccess
     public class DataAccess : IDataAccess
     {
         private readonly IConfiguration Configuration;
+        private readonly IEmailService emailService;
         private readonly string Dbconnection;
-        public DataAccess(IConfiguration _configuration)
+        public DataAccess(IConfiguration _configuration,IEmailService _emailService)
         {
             Configuration = _configuration;
+            emailService = _emailService;
             Dbconnection = Configuration["ConnectionStrings:DatabaseConnectionString"] ?? "";
         }
 
@@ -38,7 +40,7 @@ namespace Api.DataAccess
             return result;
         }
 
-        public int CreateUser(User user)
+        public  int CreateUser(User user)
         {
             var result = 0;
             using (var conn = new SqlConnection(Dbconnection))
@@ -56,9 +58,13 @@ namespace Api.DataAccess
                     type = user.UserType.ToString(),
                 };
                 var sql = "insert into Users (FirstName, LastName, Email, Mobile, Password, Blocked, Active, CreatedOn, UserType) values (@fn, @ln, @em, @mb, @pwd, @blk, @act, @con, @type);";
-                result = conn.Execute(sql, parameters);
+                 result = conn.Execute(sql, parameters);
+
+                
             }
             return result;
+
+            
         }
 
         public IList<Book> GetAllBooks()

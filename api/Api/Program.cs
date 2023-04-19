@@ -41,7 +41,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 
 //DI
-builder.Services.AddSingleton<IDataAccess,DataAccess>();
+builder.Services.AddScoped<IDataAccess,DataAccess>();
+builder.Services.AddScoped<IEmailService, EmailServices>();
+
 
 var app = builder.Build();
 

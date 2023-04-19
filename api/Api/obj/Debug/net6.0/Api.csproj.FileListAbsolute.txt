@@ -92,3 +92,6 @@ C:\lab managment\LabManagment\api\Api\obj\Debug\net6.0\refint\Api.dll
 C:\lab managment\LabManagment\api\Api\obj\Debug\net6.0\Api.pdb
 C:\lab managment\LabManagment\api\Api\obj\Debug\net6.0\Api.genruntimeconfig.cache
 C:\lab managment\LabManagment\api\Api\obj\Debug\net6.0\ref\Api.dll
+C:\lab managment\LabManagment\api\Api\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\lab managment\LabManagment\api\Api\bin\Debug\net6.0\SendGrid.dll
+C:\lab managment\LabManagment\api\Api\bin\Debug\net6.0\StarkbankEcdsa.dll
